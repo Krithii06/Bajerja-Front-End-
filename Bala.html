@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter API Input</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #container {
+            max-width: 600px;
+            margin: auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        textarea, input[type="text"], button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+        #response {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h2>API Input</h2>
+        <textarea id="apiInput" rows="4" placeholder='{"data":["M","1","334","4","B"]}'></textarea>
+        <button onclick="submitData()">Submit</button>
+        
+        <div id="response">
+            <h3>Filtered Response</h3>
+            <pre id="responseContent"></pre>
+        </div>
+    </div>
+
+    <script>
+        async function submitData() {
+            const input = document.getElementById('apiInput').value;
+            
+            try {
+                const response = await fetch('http://localhost:5000/bfhl', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: input
+                });
+
+                const data = await response.json();
+                document.getElementById('responseContent').innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
